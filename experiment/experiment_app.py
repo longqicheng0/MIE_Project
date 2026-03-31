@@ -116,7 +116,7 @@ class ExperimentApp:
 
                 input_box.handle_event(event)
 
-                if event.type == pygame.MOUSEBUTTONDOWN:
+                if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
                     if visual_button.clicked(event.pos):
                         selected_condition = "visual"
                     elif auditory_button.clicked(event.pos):

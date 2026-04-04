@@ -1,0 +1,14 @@
+column,n_missing,pct_missing
+click_timestamp_ms,0,0
+condition,0,0
+cumulative_score,0,0
+hit,0,0
+participant_id,0,0
+reaction_time_ms,0,0
+session_elapsed_ms,0,0
+target_onset_timestamp_ms,0,0
+target_radius,0,0
+target_x,0,0
+target_y,0,0
+trial_number,0,0
+trial_type,0,0

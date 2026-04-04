@@ -1,0 +1,5 @@
+metric,condition,n,statistic,p_value
+participant_mean_rt_ms,auditory,11,0.8974435607365499,0.1719872118463269
+participant_mean_rt_ms,visual,13,0.8835942560571846,0.07978331091243736
+participant_hit_rate_pct,auditory,11,0.8817316920612049,0.10944338080944004
+participant_hit_rate_pct,visual,13,0.880925133180918,0.0733980377679954

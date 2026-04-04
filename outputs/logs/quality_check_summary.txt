@@ -1,0 +1,9 @@
+Raw trial cleaning summary
+Source files read: 24
+Combined raw rows: 600
+Rows with any missing value: 0
+Duplicate participant-condition-trial rows: 0
+Impossible RT rows (<= 0 ms): 0
+Suspicious RT rows (> 5000 ms): 1
+Clean experimental rows written: 480
+Output file: data/processed/experimental_trials_clean.csv

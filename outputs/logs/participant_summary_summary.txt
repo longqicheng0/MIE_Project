@@ -1,0 +1,6 @@
+Participant summary creation complete.
+Experimental rows read: 480
+Participant-condition rows written: 24
+Condition-metric summary rows written: 4
+Participant summary file: data/processed/participant_summary.csv
+Condition summary file: data/processed/condition_summary.csv

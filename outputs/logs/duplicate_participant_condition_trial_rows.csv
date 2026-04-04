@@ -1,0 +1,1 @@
+participant_id,condition,trial_number,trial_type,target_x,target_y,target_radius,target_onset_timestamp_ms,click_timestamp_ms,reaction_time_ms,session_elapsed_ms,hit,cumulative_score,source_file

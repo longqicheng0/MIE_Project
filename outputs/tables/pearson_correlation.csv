@@ -1,0 +1,2 @@
+metric,estimate,statistic,p.value,parameter,conf.low,conf.high,method,alternative
+mean_rt_ms_vs_hit_rate_pct,0.48022717252458513,2.5679531626296526,0.017545308161995784,22,0.0952902951688703,0.7402258121106738,Pearson's product-moment correlation,two.sided

@@ -1,0 +1,3 @@
+metric,estimate,statistic,p.value,conf.low,conf.high,method,alternative
+participant_mean_rt_ms,-19.78108678399037,63,0.643011484398551,-103.42107997951723,79.47457264950786,Wilcoxon rank sum test with continuity correction,two.sided
+participant_hit_rate_pct,-3.782283605769938e-5,65,0.7200618124754903,-5.000046046836939,4.999968931503372,Wilcoxon rank sum test with continuity correction,two.sided

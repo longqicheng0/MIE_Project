@@ -1,0 +1,5 @@
+metric,term,Df,F value,Pr(>F)
+participant_mean_rt_ms,condition  ,1,0.053317337163989766,0.819522101310658
+participant_mean_rt_ms,Residuals  ,22,NA,NA
+participant_hit_rate_pct,condition  ,1,0.20705882352941146,0.6535411904571908
+participant_hit_rate_pct,Residuals  ,22,NA,NA

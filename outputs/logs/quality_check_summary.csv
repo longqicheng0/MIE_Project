@@ -1,0 +1,2 @@
+total_rows_read,source_files,rows_with_any_missing,duplicate_participant_condition_trial_rows,impossible_rt_rows,suspicious_rt_rows_over_5000_ms
+600,24,0,0,0,1

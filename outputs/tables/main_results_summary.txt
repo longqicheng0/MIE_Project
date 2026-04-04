@@ -1,0 +1,34 @@
+Rapid Target Clicking Experiment: Main Results
+
+Participant-level descriptives
+RT - auditory: n=11, mean=321.230, sd=124.610, median=287.105, min=171.444, max=541.200, 95% CI=[237.516, 404.943]
+RT - visual: n=13, mean=339.362, sd=120.085, median=302.824, min=206.882, max=608.400, 95% CI=[266.796, 411.929]
+Hit rate - auditory: n=11, mean=90.909, sd=7.687, median=90.000, min=75.000, max=100.000, 95% CI=[85.745, 96.073]
+Hit rate - visual: n=13, mean=92.692, sd=5.633, median=95.000, min=85.000, max=100.000, 95% CI=[89.288, 96.096]
+
+Shapiro-Wilk tests
+RT - auditory: W=0.897, p=0.172
+RT - visual: W=0.884, p=0.080
+Hit rate - auditory: W=0.882, p=0.109
+Hit rate - visual: W=0.881, p=0.073
+
+Levene tests
+RT: F=0.053, df1=1, df2=22, p=0.820
+Hit rate: F=0.207, df1=1, df2=22, p=0.654
+
+Independent-samples t-tests
+RT: t=-0.361, df=21.056, p=0.722, mean difference=-18.133
+Hit rate: t=-0.638, df=18.047, p=0.532, mean difference=-1.783
+
+Wilcoxon rank-sum tests
+RT: W=63.000, p=0.643
+Hit rate: W=65.000, p=0.720
+
+Effect sizes
+RT Cohen's d=-0.148, 95% CI=[-0.951, 0.657]
+Hit rate Cohen's d=-0.268, 95% CI=[-1.072, 0.541]
+
+Pearson correlation
+RT vs hit rate: r=0.480, p=0.018, 95% CI=[0.095, 0.740]
+
+Participant rows analyzed for correlation: 24

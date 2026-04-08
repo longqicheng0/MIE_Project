@@ -2,7 +2,7 @@
 
 # Run participant-level descriptives, assumption checks, inferential tests, and effect sizes.
 
-required_packages <- c("dplyr", "tidyr", "stringr", "tibble", "readr", "janitor", "broom", "effectsize")
+required_packages <- c("dplyr", "tidyr", "stringr", "tibble", "readr", "janitor", "broom", "effectsize", "ggplot2")
 
 check_packages <- function(packages) {
   missing_packages <- packages[!vapply(packages, requireNamespace, logical(1), quietly = TRUE)]
@@ -27,14 +27,17 @@ suppressPackageStartupMessages({
   library(janitor)
   library(broom)
   library(effectsize)
+  library(ggplot2)
 })
 
 summary_file <- file.path("data", "processed", "participant_summary.csv")
 tables_dir <- file.path("outputs", "tables")
 logs_dir <- file.path("outputs", "logs")
+figures_dir <- file.path("outputs", "figures")
 
 dir.create(tables_dir, recursive = TRUE, showWarnings = FALSE)
 dir.create(logs_dir, recursive = TRUE, showWarnings = FALSE)
+dir.create(figures_dir, recursive = TRUE, showWarnings = FALSE)
 
 if (!file.exists(summary_file)) {
   stop(
@@ -208,6 +211,93 @@ rt_t_test <- broom::tidy(t.test(mean_rt_ms ~ condition, data = rt_data)) %>%
 hit_t_test <- broom::tidy(t.test(hit_rate_pct ~ condition, data = hit_rate_data)) %>%
   mutate(metric = "participant_hit_rate_pct", .before = 1)
 
+theme_experiment <- theme_minimal(base_size = 12) +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    plot.subtitle = element_text(color = "grey30"),
+    axis.title = element_text(face = "bold"),
+    panel.grid.minor = element_blank()
+  )
+
+save_t_distribution_plot <- function(t_test_row, metric_title, filename, alpha = 0.05) {
+  t_stat <- as.numeric(t_test_row$statistic[[1]])
+  df <- as.numeric(t_test_row$parameter[[1]])
+  p_val <- as.numeric(t_test_row$p.value[[1]])
+
+  if (any(is.na(c(t_stat, df, p_val))) || !is.finite(df) || df <= 0) {
+    warning("Skipping t-distribution plot for ", metric_title, " due to invalid t-test output.")
+    return(invisible(NULL))
+  }
+
+  critical_t <- stats::qt(1 - alpha / 2, df = df)
+  x_limit <- max(abs(t_stat), abs(critical_t)) + 1
+  x_vals <- seq(-x_limit, x_limit, length.out = 1000)
+
+  dist_df <- tibble(
+    x = x_vals,
+    density = stats::dt(x_vals, df = df),
+    region = dplyr::case_when(
+      x <= -critical_t ~ "reject",
+      x >= critical_t ~ "reject",
+      TRUE ~ "retain"
+    )
+  )
+
+  y_top <- max(dist_df$density, na.rm = TRUE)
+  label_x <- -x_limit + 0.08 * (2 * x_limit)
+  label_y <- y_top * 0.95
+
+  annotation_text <- paste0(
+    "Observed t = ", formatC(t_stat, digits = 3, format = "f"), "\n",
+    "df = ", formatC(df, digits = 1, format = "f"), "\n",
+    "p-value = ", formatC(p_val, digits = 4, format = "f"), "\n",
+    "Critical t = ±", formatC(critical_t, digits = 3, format = "f"),
+    " (alpha = ", formatC(alpha, digits = 2, format = "f"), ", two-tailed)"
+  )
+
+  t_plot <- ggplot(dist_df, aes(x = x, y = density)) +
+    geom_area(
+      data = dist_df %>% filter(region == "reject"),
+      fill = "#C05640",
+      alpha = 0.28
+    ) +
+    geom_line(color = "#2A6F97", linewidth = 1.1) +
+    geom_vline(xintercept = c(-critical_t, critical_t), linetype = "dashed", color = "#7A7A7A", linewidth = 0.8) +
+    geom_vline(xintercept = t_stat, color = "#1F2937", linewidth = 1.0) +
+    annotate("text", x = label_x, y = label_y, label = annotation_text, hjust = 0, vjust = 1, size = 3.6, color = "#1F2937") +
+    labs(
+      title = paste0("Two-Tailed t-Distribution: ", metric_title),
+      subtitle = "Shaded regions indicate rejection regions at alpha = 0.05",
+      x = "t-value",
+      y = "Density"
+    ) +
+    coord_cartesian(xlim = c(-x_limit, x_limit), ylim = c(0, y_top * 1.08)) +
+    theme_experiment
+
+  ggsave(
+    filename = file.path(figures_dir, filename),
+    plot = t_plot,
+    width = 8,
+    height = 5.5,
+    dpi = 300,
+    bg = "white"
+  )
+
+  invisible(t_plot)
+}
+
+save_t_distribution_plot(
+  t_test_row = rt_t_test,
+  metric_title = "Participant Mean Reaction Time by Condition",
+  filename = "t_distribution_reaction_time.png"
+)
+
+save_t_distribution_plot(
+  t_test_row = hit_t_test,
+  metric_title = "Participant Hit Rate by Condition",
+  filename = "t_distribution_hit_rate.png"
+)
+
 rt_wilcox <- broom::tidy(wilcox.test(mean_rt_ms ~ condition, data = rt_data, exact = FALSE, conf.int = TRUE)) %>%
   mutate(metric = "participant_mean_rt_ms", .before = 1)
 
@@ -355,3 +445,4 @@ writeLines(assumption_lines, file.path(tables_dir, "assumption_checks_summary.tx
 
 message("Wrote statistical tables to outputs/tables/")
 message("Wrote console-friendly summary files to outputs/tables/")
+message("Saved t-distribution figures to outputs/figures/")
